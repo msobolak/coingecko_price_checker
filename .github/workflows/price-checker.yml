@@ -1,0 +1,42 @@
+name: PriceChecker
+# {"id":"openai-erc","symbol":"openai erc","name":"OpenAI ERC"}
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  price_checker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        asset: ["openai-erc"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node_version: "18"
+      - name: Install coingeco-api
+        run: npm install coingecko-api
+      - name: Find price of ${{ matrix.asset }}
+        uses: actions/github-script@v6.3.3
+        with:
+          retries: 2
+          script: |
+            // TODO: change to simple.fetchTokenPrice
+            // var zrx = '0xe41d2489571d322189246dafa5ebde1f4699f498';
+            // let data = await CoinGeckoClient.simple.fetchTokenPrice({
+            // contract_addresses: zrx,
+            // vs_currencies: 'usd',
+            // });
+            // Ref: https://github.com/miscavage/CoinGecko-API
+            
+            const CoinGecko = require('coingecko-api');
+            const CoinGeckoClient = new CoinGecko();
+            var func = async() => {
+              let data = await CoinGeckoClient.simple.price({
+                id: ${{ matrix.asset }},
+                vs_currencies: 'usd',
+              });
+            };
+            console.log(data)
