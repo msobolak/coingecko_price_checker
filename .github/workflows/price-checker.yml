@@ -31,12 +31,14 @@ jobs:
             // });
             // Ref: https://github.com/miscavage/CoinGecko-API
             
+            const Q = require('q');
             const CoinGecko = require('coingecko-api');
             const CoinGeckoClient = new CoinGecko();
-            var func = async() => {
+            var getPrice = async() => {
               let data = await CoinGeckoClient.simple.price({
                 id: ${{ matrix.asset }},
                 vs_currencies: 'usd',
               });
+              return Q.ninvoke(data, 'drop')
+                .then(function() {console.log('dropped ' + $${{ matrix.asset }}); });
             };
-            console.log(data)
