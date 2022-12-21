@@ -1,5 +1,5 @@
 name: PriceChecker
-# {"id":"openai-erc","symbol":"openai erc","name":"OpenAI ERC"}
+
 on:
   push:
     branches: [ "main" ]
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        asset: ["openai-erc"]
+        asset: ["0x6a6aa13393b7d1100c00a57c76c39e8b6c835041"]
 
     steps:
       - uses: actions/checkout@v3
@@ -23,29 +23,27 @@ jobs:
         with:
           retries: 2
           script: |
-            // TODO: change to simple.fetchTokenPrice
-            // var zrx = '0xe41d2489571d322189246dafa5ebde1f4699f498';
-            // let data = await CoinGeckoClient.simple.fetchTokenPrice({
-            // contract_addresses: zrx,
-            // vs_currencies: 'usd',
-            // });
-            // Ref: https://github.com/miscavage/CoinGecko-API
-            
+            // openai-erc: 0x6a6aa13393b7d1100c00a57c76c39e8b6c835041
+            //
+            const fs = require('fs');
             const CoinGecko = require('coingecko-api');
             const CoinGeckoClient = new CoinGecko();
-            const getPrice = async() => {
-              let data;
-              try {
-                data = await CoinGeckoClient.simple.price({
-                  id: "${{ matrix.asset }}",
-                  vs_currencies: "usd",
-                });
-              }
-              catch (err) {
-                console.log(err);
-              }
+            
+            var getPrice = async() => {
+              var zrx = ${{ matrix.asset }};
+              let data = await CoinGeckoClient.simple.fetchTokenPrice({
+                contract_addresses: zrx,
+                vs_currencies: 'usd',
+              });
               return data;
             };
-            
-            const priceData = await getPrice();
-            console.log(priceData)
+
+            const price = getPrice();
+            price.then((value) => {
+              if (value['code'] == '200') {
+                const priceValue = value['data'][]['usd'];
+                console.log(`Price openai-erc: ${priceValue}`);
+              } else {
+                console.error(`Error: value['code']`);
+              };
+            });
