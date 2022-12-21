@@ -41,8 +41,8 @@ jobs:
             const price = getPrice();
             price.then((value) => {
               if (value['code'] == '200') {
-                const priceValue = value['data'][]['usd'];
-                console.log(`Price openai-erc: ${priceValue}`);
+                const priceValue = value['data'][${{ matrix.asset }}]['usd'];
+                console.log(`Price ${{ matrix.asset }}: ${priceValue}`);
                 fs.writeFileSync('openai-erc.json', value);
               } else {
                 console.error(`Error: value['code']`);
