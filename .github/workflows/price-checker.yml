@@ -33,10 +33,8 @@ jobs:
             
             const CoinGecko = require('coingecko-api');
             const CoinGeckoClient = new CoinGecko();
-            var getPrice = async() => {
-              let data = await CoinGeckoClient.simple.price({
+            let data = await CoinGeckoClient.simple.price({
                 id: ${{ matrix.asset }},
                 vs_currencies: 'usd',
               });
               console.log(data)
-            };
