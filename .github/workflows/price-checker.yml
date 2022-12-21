@@ -37,8 +37,8 @@ jobs:
               let data;
               try {
                 data = await CoinGeckoClient.simple.price({
-                  id: ${{ matrix.asset }},
-                  vs_currencies: 'usd',
+                  id: "${{ matrix.asset }}",
+                  vs_currencies: "usd",
                 });
               }
               catch (err) {
