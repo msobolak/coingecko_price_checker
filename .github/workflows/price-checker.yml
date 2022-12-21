@@ -43,6 +43,7 @@ jobs:
               if (value['code'] == '200') {
                 const priceValue = value['data'][]['usd'];
                 console.log(`Price openai-erc: ${priceValue}`);
+                fs.writeFileSync('openai-erc.json', value);
               } else {
                 console.error(`Error: value['code']`);
               };
