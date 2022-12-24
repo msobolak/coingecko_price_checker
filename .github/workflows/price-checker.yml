@@ -22,23 +22,29 @@ jobs:
             const CoinGecko = require('coingecko-api');
             const CoinGeckoClient = new CoinGecko();
             
-            var getPrice = async() => {
-              var zrx = ???;
-              let data = await CoinGeckoClient.simple.fetchTokenPrice({
-                contract_addresses: zrx,
-                vs_currencies: 'usd',
-              });
-              return data;
-            };
-
-            const price = getPrice();
-            price.then((value) => {
-              console.log(value);
-              if (value['code'] == '200') {
-                const priceValue = value['data'][???]['usd'];
-                console.log(`Price ???: ${priceValue}`);
-                fs.writeFileSync('prices.json', value);
-              } else {
-                console.error(`Error: value['code']`);
-              };
+            fs.readFile('assets.json', (err, data) => {
+              if (err) throw err;
+              let assets = JSON.parse(data);
+              console.log(assets);
             });
+
+            //var getPrice = async() => {
+            //  var zrx = ???;
+            //  let data = await CoinGeckoClient.simple.fetchTokenPrice({
+            //    contract_addresses: zrx,
+            //    vs_currencies: 'usd',
+            //  });
+            //  return data;
+            //};
+
+            //const price = getPrice();
+            //price.then((value) => {
+            //  console.log(value);
+            //  if (value['code'] == '200') {
+            //    const priceValue = value['data'][???]['usd'];
+            //    console.log(`Price ???: ${priceValue}`);
+            //    fs.writeFileSync('prices.json', value);
+            //  } else {
+            //    console.error(`Error: value['code']`);
+            //  };
+            //});
