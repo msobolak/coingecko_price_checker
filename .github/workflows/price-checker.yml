@@ -23,9 +23,10 @@ jobs:
             const CoinGeckoClient = new CoinGecko();
            
             var getPrice = async(asset_name) => {
+              let assets;
               fs.readFile('assets.json', (err, data) => {
                 if (err) throw err;
-                let assets = JSON.parse(data);
+                assets = JSON.parse(data);
                 console.log(assets[asset_name]);
               });
               let data = await CoinGeckoClient.simple.fetchTokenPrice({
