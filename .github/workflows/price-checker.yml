@@ -27,7 +27,7 @@ jobs:
             fs.readFile('assets.json', (err, data) => {
               if (err) throw err;
               assets = JSON.parse(data);
-              console.log(assets[asset_name]);
+              console.log(assets['openai-erc']);
             });
             
             //var getPrice = async(asset_name) => {
