@@ -25,26 +25,26 @@ jobs:
             fs.readFile('assets.json', (err, data) => {
               if (err) throw err;
               let assets = JSON.parse(data);
-              console.log(assets);
+              console.log(assets['openai-erc']);
             });
+           
+            var getPrice = async(zrx) => {
+              let data = await CoinGeckoClient.simple.fetchTokenPrice({
+                contract_addresses: zrx,
+                vs_currencies: 'usd',
+              });
+              return data;
+            };
 
-            //var getPrice = async() => {
-            //  var zrx = ???;
-            //  let data = await CoinGeckoClient.simple.fetchTokenPrice({
-            //    contract_addresses: zrx,
-            //    vs_currencies: 'usd',
-            //  });
-            //  return data;
-            //};
-
-            //const price = getPrice();
-            //price.then((value) => {
-            //  console.log(value);
-            //  if (value['code'] == '200') {
-            //    const priceValue = value['data'][???]['usd'];
-            //    console.log(`Price ???: ${priceValue}`);
-            //    fs.writeFileSync('prices.json', value);
-            //  } else {
-            //    console.error(`Error: value['code']`);
-            //  };
-            //});
+            var jsonAsset = assets["openai-erc"]
+            const price = getPrice(jsonAsset);
+            price.then((value) => {
+              console.log(value);
+              if (value['code'] == '200') {
+                const priceValue = value['data'][jsonAsset]['usd'];
+                console.log(`Price openai-erc: ${priceValue}`);
+                // fs.writeFileSync('prices.json', value);
+              } else {
+                console.error(`Error: value['code']`);
+              };
+            });
