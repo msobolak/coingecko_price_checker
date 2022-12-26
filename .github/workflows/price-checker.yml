@@ -32,11 +32,12 @@ jobs:
               fs.readFile('assets.json', (err, data) => {
                 if (err) throw err;
                 assets = JSON.parse(data);
-                asset_address = assets[asset_name].toString();
+                asset_address = new String(assets[asset_name]);
                 console.log(`Asset address: ${asset_address}`);
+                console.log(typeof asset_address);
               });
               let data = await CoinGeckoClient.simple.fetchTokenPrice({
-                contract_addresses: `${asset_address}`,
+                contract_addresses: asset_address,
                 vs_currencies: "usd",
               });
               return data;
