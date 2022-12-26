@@ -23,7 +23,8 @@ jobs:
             const CoinGecko = require('coingecko-api');
             const CoinGeckoClient = new CoinGecko();
            
-            let assets;
+            var assets = {};
+            var asset_name = "openai-erc";
             
             var getPrice = async(asset_name) => {
               console.log(`Asset name: ${asset_name}`);
@@ -38,8 +39,7 @@ jobs:
               });
               return data;
             };
-
-            const asset_name = "openai-erc"
+            
             const price = getPrice(asset_name);
             //price.then((value) => {
             //  console.log(value);
