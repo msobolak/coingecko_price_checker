@@ -33,12 +33,10 @@ jobs:
                 if (err) throw err;
                 assets = JSON.parse(data);
                 asset_address = assets[asset_name];
-                asset_address = JSON.stringify(asset_address);
                 console.log(`Asset address: ${asset_address}`);
-                console.log(typeof asset_address);
               });
               let data = await CoinGeckoClient.simple.fetchTokenPrice({
-                contract_addresses: asset_address,
+                contract_addresses: JSON.stringify(asset_address),
                 vs_currencies: "usd",
               });
               return data;
