@@ -32,7 +32,8 @@ jobs:
               fs.readFile('assets.json', (err, data) => {
                 if (err) throw err;
                 assets = JSON.parse(data);
-                asset_address = new String(assets[asset_name]);
+                asset_address = assets[asset_name];
+                asset_address = JSON.stringify(asset_address);
                 console.log(`Asset address: ${asset_address}`);
                 console.log(typeof asset_address);
               });
