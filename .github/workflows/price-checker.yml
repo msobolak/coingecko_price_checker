@@ -43,8 +43,8 @@ jobs:
             };
             
             const price = getPrice(asset_name);
-            price.then((value) => {
-              console.log(value);
+            //price.then((value) => {
+              //console.log(value);
               //if (value['code'] == '200') {
               //  const priceValue = value['data'][jsonAsset]['usd'];
               //  console.log(`Price openai-erc: ${priceValue}`);
@@ -52,4 +52,4 @@ jobs:
               //} else {
               //  console.error(`Error: value['code']`);
               //};
-            });
+            //});
