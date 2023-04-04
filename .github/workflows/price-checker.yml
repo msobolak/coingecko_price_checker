@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        asset: ["0x6a6aa13393b7d1100c00a57c76c39e8b6c835041"]
+        asset: ["matic-network", "conflux-token", "blockstack", "immutable-x"]
 
     steps:
       - uses: actions/checkout@v3
@@ -23,16 +23,14 @@ jobs:
         with:
           retries: 2
           script: |
-            // openai-erc: 0x6a6aa13393b7d1100c00a57c76c39e8b6c835041
-            //
             const fs = require('fs');
             const CoinGecko = require('coingecko-api');
             const CoinGeckoClient = new CoinGecko();
             
             var getPrice = async() => {
               var zrx = ${{ matrix.asset }};
-              let data = await CoinGeckoClient.simple.fetchTokenPrice({
-                contract_addresses: zrx,
+              let data = await CoinGeckoClient.simple.price({
+                id: zrx,
                 vs_currencies: 'usd',
               });
               return data;
@@ -44,7 +42,7 @@ jobs:
               if (value['code'] == '200') {
                 const priceValue = value['data'][${{ matrix.asset }}]['usd'];
                 console.log(`Price ${{ matrix.asset }}: ${priceValue}`);
-                fs.writeFileSync('openai-erc.json', value);
+                // fs.writeFileSync('openai-erc.json', value);
               } else {
                 console.error(`Error: value['code']`);
               };
