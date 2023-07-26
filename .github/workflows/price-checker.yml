@@ -9,41 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        asset: ["matic-network", "conflux-token", "blockstack", "immutable-x"]
+        asset: ["matic-network", "chainlink"]
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node_version: "18"
-      - name: Install coingeco-api
-        run: npm install coingecko-api
-      - name: Find price of ${{ matrix.asset }}
-        uses: actions/github-script@v6.3.3
-        with:
-          retries: 2
-          script: |
-            const fs = require('fs');
-            const CoinGecko = require('coingecko-api');
-            const CoinGeckoClient = new CoinGecko();
-            
-            var getPrice = async() => {
-              var zrx = ${{ matrix.asset }};
-              let data = await CoinGeckoClient.simple.price({
-                id: zrx,
-                vs_currencies: 'usd',
-              });
-              return data;
-            };
-
-            const price = getPrice();
-            price.then((value) => {
-              console.log(value);
-              if (value['code'] == '200') {
-                const priceValue = value['data'][${{ matrix.asset }}]['usd'];
-                console.log(`Price ${{ matrix.asset }}: ${priceValue}`);
-                // fs.writeFileSync('openai-erc.json', value);
-              } else {
-                console.error(`Error: value['code']`);
-              };
-            });
+      - run: |
+        curl -X 'GET' 'https://api.coingecko.com/api/v3/coins/chainlink/market_chart?vs_currency=usd&days=90&interval=hourly&precision=2' -H 'accept: application/json' | jq -r > chainlink.json
+        curl -X 'GET' \ 'https://api.coingecko.com/api/v3/coins/matic-network/market_chart?vs_currency=usd&days=90&interval=hourly&precision=2' \ -H 'accept: application/json' | jq -r > matic.json
+        
+        
